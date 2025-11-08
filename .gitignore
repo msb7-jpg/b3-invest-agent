@@ -1,0 +1,14 @@
+# Ignorar arquivos de planilhas do usuário
+*.xlsx
+*.xls
+
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar logs
+*.log
+
+# Ignorar backups
+*.bak
+*~
