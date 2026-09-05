@@ -131,6 +131,24 @@ flowchart TD
 
 ---
 
+## 📸 Visual Showcase & Real-Time Production Alerts
+
+Demonstrating live production outputs delivered directly to Telegram by the autonomous agent, showcasing structured AI sentiment classification across all market scenarios:
+
+| 🟢 Positive Sentiment | ⚪ Neutral Sentiment | 🔴 Negative Sentiment |
+| :---: | :---: | :---: |
+| <img src="media/telegram_message_positive.png" alt="Positive Sentiment Alert" width="270px" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /> | <img src="media/telegram_message_neutral.png" alt="Neutral Sentiment Alert" width="270px" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /> | <img src="media/telegram_message_negative.png" alt="Negative Sentiment Alert" width="270px" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /> |
+| **Material Fact (Fato Relevante)**<br>Interim dividend distribution & positive yield | **Notice to Market (Comunicado)**<br>Operational update & administrative routine | **Adverse Event (Alerta de Risco)**<br>Risk exposure & guidance revision |
+
+> [!NOTE]
+> Every alert includes:
+> - **Asset Ticker & Regulatory Category**: Automatically parsed from CVM filings.
+> - **Categorical Sentiment Tag**: Classified by the local LLM (`Positivo`, `Neutro`, or `Negativo`).
+> - **Executive Summary**: Synthesizing financial figures, governance decisions, and operational impacts.
+> - **Direct Source Link**: Direct download link to the original CVM document for verification.
+
+---
+
 ## ✨ Key Features
 
 - **⚡ Hybrid StatusInvest Access**:
