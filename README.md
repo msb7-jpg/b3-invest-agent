@@ -35,43 +35,6 @@ The project operates on an automated, energy-efficient IoT & AI infrastructure. 
 ### 🌐 End-to-End Infrastructure & IoT Lifecycle
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor Investor as 👤 Investor
-    participant Alexa as 🗣️ Amazon Alexa Routine
-    participant PC as 🖥️ Home Desktop (Linux/WSL)
-    participant Cron as ⏰ Cron Job (03:50 AM)
-    participant Llama as 🦙 llama.cpp Server (:8080)
-    participant Bot as 🤖 StatusInvest Bot (SDK)
-    participant CVM as 🌐 StatusInvest / CVM Portal
-    participant Telegram as 📲 Telegram Bot API
-
-    Note over Alexa,PC: 03:45 AM - Power On via Smart Home
-    Alexa->>PC: Turn ON desktop (Smart Plug / Wake-on-LAN)
-    PC-->>PC: Boot operating system and initialize network
-
-    Note over Cron,Bot: 03:50 AM - Autonomous Processing
-    Cron->>Llama: Spawn local llama.cpp server with quantized model
-    Cron->>Bot: Launch bot.py via uv
-    Bot->>CVM: Ingest latest Material Facts & Insider Trading data
-    CVM-->>Bot: Return PDF / HTML regulatory filings
-    Bot->>Bot: Deduplicate events against compressed binary state (MD5 + zlib)
-    
-    opt When new filings or ownership changes are detected
-        Bot->>Llama: Submit raw document text for structured analysis
-        Llama-->>Bot: Return Pydantic SentimentAnalysis (Sentiment + Executive Summary)
-        Bot->>Telegram: Send rich HTML alert with market insights
-        Telegram->>Investor: 🔔 Instant mobile push notification
-    end
-
-    Bot->>Bot: Commit processed hashes to state.zlib
-    Bot->>Llama: Terminate local LLM process
-
-    Note over Alexa,PC: 04:45 AM - Scheduled Power Off (~1h window)
-    Alexa->>PC: Gracefully shutdown and power OFF desktop
-```
-
-```mermaid
 flowchart LR
     subgraph SmartHome ["🏠 Smart Home & Hardware Lifecycle"]
         direction TB
