@@ -18,6 +18,40 @@
 
 ---
 
+## 📸 Visual Showcase: Live Production Alerts
+
+> [!TIP]
+> **Interactive Carousel**: Click on any slide below to preview the live Telegram alerts dispatched by the local AI agent across different market events.
+
+<details open>
+<summary><b>🟢 Slide 1: Positive Sentiment — Material Fact (Fato Relevante / Dividends)</b> <i>(Click to toggle)</i></summary>
+
+> **AI Analysis**: Interim dividend distribution approved by Board of Directors. Positive yield impact.
+
+![Positive Sentiment Alert](media/telegram_message_positive.png)
+
+</details>
+
+<details>
+<summary><b>⚪ Slide 2: Neutral Sentiment — Market Notice (Comunicado ao Mercado)</b> <i>(Click to toggle)</i></summary>
+
+> **AI Analysis**: Operational update and administrative corporate calendar notice. Neutral price impact.
+
+![Neutral Sentiment Alert](media/telegram_message_neutral.png)
+
+</details>
+
+<details>
+<summary><b>🔴 Slide 3: Negative Sentiment — Adverse Event / Risk Notice (Alerta de Risco)</b> <i>(Click to toggle)</i></summary>
+
+> **AI Analysis**: Financial guidance revision / legal exposure detection requiring investor attention.
+
+![Negative Sentiment Alert](media/telegram_message_negative.png)
+
+</details>
+
+---
+
 ## 💡 About the Project
 
 The Brazilian financial market generates hundreds of regulatory filings, Material Facts, market announcements, and shareholding updates daily. Tracking this volume of information manually is impractical for individual investors and analysts.
@@ -128,24 +162,6 @@ flowchart TD
         SENTINEL -.-> TELEGRAM
     end
 ```
-
----
-
-## 📸 Visual Showcase & Real-Time Production Alerts
-
-Demonstrating live production outputs delivered directly to Telegram by the autonomous agent, showcasing structured AI sentiment classification across all market scenarios:
-
-| 🟢 Positive Sentiment | ⚪ Neutral Sentiment | 🔴 Negative Sentiment |
-| :---: | :---: | :---: |
-| <img src="media/telegram_message_positive.png" alt="Positive Sentiment Alert" width="270px" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /> | <img src="media/telegram_message_neutral.png" alt="Neutral Sentiment Alert" width="270px" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /> | <img src="media/telegram_message_negative.png" alt="Negative Sentiment Alert" width="270px" style="border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.15);" /> |
-| **Material Fact (Fato Relevante)**<br>Interim dividend distribution & positive yield | **Notice to Market (Comunicado)**<br>Operational update & administrative routine | **Adverse Event (Alerta de Risco)**<br>Risk exposure & guidance revision |
-
-> [!NOTE]
-> Every alert includes:
-> - **Asset Ticker & Regulatory Category**: Automatically parsed from CVM filings.
-> - **Categorical Sentiment Tag**: Classified by the local LLM (`Positivo`, `Neutro`, or `Negativo`).
-> - **Executive Summary**: Synthesizing financial figures, governance decisions, and operational impacts.
-> - **Direct Source Link**: Direct download link to the original CVM document for verification.
 
 ---
 
