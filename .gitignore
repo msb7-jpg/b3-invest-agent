@@ -1,15 +1,23 @@
-# Ignorar arquivos de planilhas do usuário
-*.xlsx
-*.xls
+# Python & Ambientes Virtuais
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.mypy_cache/
+.pytest_cache/
 
-# Ignorar arquivos do sistema
+# Dados Locais e Estados do Bot
+.env
+data/*.zlib
+logs/*.log
+logs/*.txt
+
+# Arquivos do Sistema e Planilhas
 .DS_Store
 Thumbs.db
-
-# Ignorar logs
-*.log
-
-# Ignorar backups
+*.xlsx
+*.xls
 *.bak
 *~
-.env

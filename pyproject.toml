@@ -1,7 +1,7 @@
 [project]
 name = "investidor"
 version = "0.1.0"
-description = "Add your description here"
+description = "Autonomous AI-powered bot and Python SDK for smart B3 market intelligence via StatusInvest"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -16,3 +16,7 @@ dependencies = [
     "requests>=2.34.2",
     "yfinance>=1.5.1",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

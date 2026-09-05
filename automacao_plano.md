@@ -1,77 +1,90 @@
-# 🗓️ Plano de Automação: StatusInvest AI Bot
+# 🗓️ Automation Plan: StatusInvest AI Bot & IoT Lifecycle
 
-Este documento define a arquitetura e os passos necessários para colocar o seu robô rodando de forma 100% autônoma, orquestrando a subida da inteligência artificial, a raspagem e o desligamento da máquina.
+This document defines the architecture and automation procedures required to operate the bot completely autonomously, integrating smart home hardware (Amazon Alexa), scheduled local AI inference (`llama.cpp`), and automated machine power management.
 
-## 1. Variáveis de Ambiente (Implementado ✅)
-O código já foi atualizado para não depender mais de ativos *hardcoded*. O bot agora consome os ativos direto do ambiente.
+---
 
-Para configurar, basta adicionar ao `.env`:
+## 1. Environment Configuration (.env)
+
+The bot dynamically loads monitored assets from the environment:
+
 ```env
 ATIVOS_MONITORADOS="PETR4,TAEE11,XPML11,VALE3,ITUB4"
+OPENAI_API_BASE="http://localhost:8080/v1"
+OPENAI_API_KEY="not-needed"
+OPENAI_MODEL_NAME="local-model"
+TELEGRAM_BOT_TOKEN="your_bot_token"
+TELEGRAM_CHAT_ID="your_chat_id"
 ```
 
 ---
 
-## 2. Orquestração: O Script Principal (`pipeline.sh` ou `pipeline.bat`)
+## 2. Infrastructure & Hardware Lifecycle (Amazon Alexa Routine)
 
-Em vez de agendar comandos separados, criaremos um único script (Shell Script no Linux/WSL ou Batch no Windows) que fará a orquestração sequencial. Ele atuará como o maestro do processo:
+To achieve maximum energy efficiency (0W idle standby) without paying for 24/7 cloud servers:
+
+1. **03:45 AM (Smart Turn-On)**:
+   - Amazon Alexa triggers a routine using a Smart Plug (or Wake-on-LAN) to boot the home desktop workstation.
+   - Operating system and networking services initialize.
+2. **04:45 AM (Smart Turn-Off)**:
+   - Exactly 1 hour after startup, the Alexa routine sends a graceful shutdown command or cuts power via the Smart Plug timer, leaving the computer safely powered off for the rest of the day.
+
+---
+
+## 3. Orchestration Script (`pipeline.sh`)
+
+Place `pipeline.sh` in the project root to orchestrate starting the local LLM, executing the bot, and cleaning up:
 
 ```bash
 #!/bin/bash
+set -e
 
-# Passo 1: Subir o Servidor LLM (Interface abstrata)
-echo "Iniciando o servidor do Llama..."
+PROJECT_DIR="/home/miguel/workspace/investidor"
+cd "$PROJECT_DIR"
+
+echo "[$(date)] Starting local llama.cpp server..."
+# Example: starting llama.cpp server in the background
+# ./llama-server -m /models/mistral-7b-instruct.Q4_K_M.gguf --port 8080 --ctx-size 4096 &
 llama_up &
 LLM_PID=$!
 
-# Aguarda alguns segundos para o servidor subir completamente na porta 8080
+# Wait 15 seconds for the HTTP API to become ready on port 8080
 sleep 15
 
-# Passo 2: Rodar o Bot
-echo "Iniciando raspagem e análise de IA..."
-cd /caminho/para/o/projeto/investidor
+echo "[$(date)] Executing StatusInvest Bot..."
 uv run python bot.py
 
-# Passo 3: Limpeza (Opcional, mas recomendado)
-echo "Derrubando o servidor LLM local..."
-kill $LLM_PID
+echo "[$(date)] Stopping local LLM server (PID: $LLM_PID)..."
+kill $LLM_PID || true
 
-# Passo 4: Desligar o computador (Interface abstrata)
-echo "Desligando a máquina..."
-win-shutdown
+echo "[$(date)] Processing finished successfully."
 ```
 
-> [!TIP]
-> Se esse comando rodar diretamente do Windows (cmd/Powershell) via WSL, o `win-shutdown` pode ser substituído concretamente por `shutdown /s /f /t 10`.
+Make it executable:
+```bash
+chmod +x pipeline.sh
+```
 
 ---
 
-## 3. Agendamento Automático (Cron Job ou Agendador de Tarefas)
+## 4. Crontab Scheduling (03:50 AM)
 
-Precisamos que esse fluxo rode sem intervenção humana, preferencialmente após o fechamento do mercado (ex: 19:00).
+Configure Linux `crontab` (`crontab -e`) to trigger 5 minutes after desktop boot:
 
-**Se você for usar WSL/Linux (Cron):**
-Basta abrir o crontab (`crontab -e`) e adicionar a seguinte linha para rodar de segunda a sexta às 19:00:
 ```cron
-0 19 * * 1-5 /bin/bash /caminho/para/o/pipeline.sh >> /caminho/para/logs/cron.log 2>&1
+# Runs Monday through Friday at 03:50 AM
+50 3 * * 1-5 /home/miguel/workspace/investidor/pipeline.sh >> /home/miguel/workspace/investidor/logs/cron.log 2>&1
 ```
-
-**Se você for usar o Windows Nativo (Agendador de Tarefas):**
-1. Abra o **Task Scheduler** (Agendador de Tarefas).
-2. Crie uma Tarefa Básica: *"Executar Bot StatusInvest"*.
-3. Defina o gatilho para **Diariamente**, configurando o horário desejado (ex: 19h).
-4. Na aba **Ação**, mande iniciar um programa e aponte para o seu script `.bat` equivalente.
-5. Em **Condições**, marque para ligar o computador (se aplicável) e rodar caso não esteja em uso.
 
 ---
 
-## 4. O Fluxo de Vida Desejado (TL;DR)
+## 5. End-to-End Operational Lifecycle (TL;DR)
 
-1. **Relógio bate 19:00** 🕒
-2. Cron/Agendador chama o `pipeline`.
-3. Máquina carrega o `llama_up` na memória (porta 8080).
-4. Bot coleta URLs CVM na nuvem.
-5. Bot faz download de Fatos Relevantes e extrai formulários de "Posição Acionária".
-6. Bot envia o PDF cru + HTML ao LLM ativo.
-7. O Telegram do Investidor apita com os resumos mastigados.
-8. Máquina aciona o comando `win-shutdown` e descansa até o dia seguinte. 💤
+1. **03:45 AM** 🕒: Alexa routine triggers hardware boot (Smart Plug / WoL).
+2. **03:50 AM** ⏰: Crontab initiates `pipeline.sh`.
+3. **03:50 AM** 🦙: `llama.cpp` loads the local model into VRAM/RAM on port 8080.
+4. **03:51 AM** 📡: `bot.py` queries StatusInvest and CVM for new Material Facts & Insider Positions.
+5. **03:52 AM** 💾: State Manager deduplicates filings via MD5 hashes in `data/state.zlib`.
+6. **03:53 AM** 🧠: Unseen reports are analyzed by the local LLM (sentiment + executive summary).
+7. **03:55 AM** 📲: Rich HTML market alerts are dispatched via Telegram Bot API to the investor.
+8. **04:45 AM** 💤: Alexa routine safely powers off the workstation after the 1-hour window.
