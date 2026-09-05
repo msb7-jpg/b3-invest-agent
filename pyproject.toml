@@ -1,5 +1,5 @@
 [project]
-name = "investidor"
+name = "b3-invest-agent"
 version = "0.1.0"
 description = "Autonomous AI-powered bot and Python SDK for smart B3 market intelligence via StatusInvest"
 readme = "README.md"

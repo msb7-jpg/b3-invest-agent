@@ -1,4 +1,4 @@
-# 📊 StatusInvest AI Bot & Private Python SDK
+# 📊 B3 Invest Agent & Private Python SDK
 
 <div align="center">
 
@@ -87,17 +87,17 @@ flowchart LR
 ```mermaid
 flowchart TD
     subgraph Ingestion ["📡 Data Ingestion Layer"]
-        SI[StatusInvest Portal / CVM]
-        API[StatusInvest Internal API\nBatch JSON]
-        SCRAP[BeautifulSoup Scraper\nDynamic HTML]
+        SI["StatusInvest Portal / CVM"]
+        API["StatusInvest Internal API<br/>Batch JSON"]
+        SCRAP["BeautifulSoup Scraper<br/>Dynamic HTML"]
         SI --> API
         SI --> SCRAP
     end
 
     subgraph Detection ["⚡ Processing & Deduplication"]
-        CLIENT[StatusInvestClient]
-        INSIDER[InsiderScraper\nShareholding Positions]
-        STATE[(StateManager\nZLIB Binary Memory\nMD5 Hashes)]
+        CLIENT["StatusInvestClient"]
+        INSIDER["InsiderScraper<br/>Shareholding Positions"]
+        STATE[("StateManager<br/>ZLIB Binary Memory<br/>MD5 Hashes")]
         
         API --> CLIENT
         SCRAP --> CLIENT
@@ -108,9 +108,9 @@ flowchart TD
     end
 
     subgraph Intelligence ["🧠 Artificial Intelligence Layer"]
-        EXTRACT[Document Extractor\nPDF: pypdf | HTML: bs4]
-        LLM[LangChain + Local LLM\nllama.cpp / Ollama / LM Studio]
-        PYDANTIC[Pydantic Structured Output\nSentiment + Executive Summary]
+        EXTRACT["Document Extractor<br/>PDF: pypdf / HTML: bs4"]
+        LLM["LangChain + Local LLM<br/>llama.cpp / Ollama / LM Studio"]
+        PYDANTIC["Pydantic Structured Output<br/>Sentiment + Executive Summary"]
         
         STATE -->|Unseen Events| EXTRACT
         EXTRACT --> LLM
@@ -118,9 +118,9 @@ flowchart TD
     end
 
     subgraph Delivery ["📲 Notification & Alerts"]
-        TELEGRAM[TelegramNotifier\nHTML Formatted Messages]
-        FILE[FileNotifier\nLocal Debug Logs]
-        SENTINEL[Layout Sentinel\nPageLayoutChangedError]
+        TELEGRAM["TelegramNotifier<br/>HTML Formatted Messages"]
+        FILE["FileNotifier<br/>Local Debug Logs"]
+        SENTINEL["Layout Sentinel<br/>PageLayoutChangedError"]
         
         PYDANTIC --> TELEGRAM
         PYDANTIC --> FILE
@@ -162,7 +162,7 @@ flowchart TD
 ## 📁 Repository Structure
 
 ```text
-investidor/
+b3-invest-agent/
 ├── bot.py                     # Autonomous bot orchestrator
 ├── pyproject.toml             # Project & dependency management (uv/pip)
 ├── .env.example               # Environment variables template
@@ -204,8 +204,8 @@ investidor/
 
 ```bash
 # Clone the repository
-git clone git@github.com:MigueldsBatista/investidor.git
-cd investidor
+git clone git@github.com:MigueldsBatista/b3-invest-agent.git
+cd b3-invest-agent
 
 # Create virtual environment and sync dependencies with uv
 uv sync

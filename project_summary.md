@@ -1,4 +1,4 @@
-# 🚀 StatusInvest AI Bot & Private SDK
+# 🚀 B3 Invest Agent & Private SDK
 **Architecture Document & Project Summary**
 
 ## 🎯 Project Objective
